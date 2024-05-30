@@ -1,0 +1,65 @@
+#!/bin/bash
+
+
+if [ "$#" -ne 4 ]; then
+    echo 8web | figlet
+    echo "      adot8 <3"
+    echo
+    echo "Usage: 8web <url> <wordlist> <domain> <extensions>"
+    exit 1
+fi
+
+
+url=$1
+wordlist=$2
+domain=$3
+extensions=$4
+
+cleanup() {
+    echo
+    echo
+    echo -e "\e[31m[+]\e[0m Bye!"
+    exit 0
+}
+
+scheme=$(echo "$url" | grep -oP '^https?://')
+urldomain="$scheme$domain"
+
+ echo 8web | figlet
+    echo "      adot8 <3"
+ sleep 1
+
+ #CTRL-C force cleanup
+trap cleanup SIGINT
+
+if [[ $scheme == 'https://' ]]; then
+    echo
+    echo -e "\e[34m[+]\e[0m Grabbing SSL certificate" 
+    sleep 1
+    echo 
+    timeout 3 openssl s_client -showcerts -connect $domain':443'
+
+fi
+
+
+# gobuster
+echo
+echo -e "\e[34m[+]\e[0m Enumerating for directories and possible files with gobuster..."
+sleep 1
+echo
+gobuster -t100 dir -w $wordlist -x $extensions -u $url -k
+echo
+
+# wfuzz
+echo -e "\e[34m[+]\e[0m Finding filter size with wfuzz..."
+sleep 1
+echo
+timeout 1s wfuzz -c -f sub-fighter -w ~/opt/wordlists/subdomains_small.txt  -u $urldomain  -H "HOST: FUZZ.$domain.htb" --hw 1
+echo
+read -p "Filter value> " hw_value
+echo
+echo -e "\e[34m[+]\e[0m Enumerating for possible subdomains with wfuzz..."
+sleep 1
+wfuzz -c -f sub-fighter -w ~/opt/wordlists/subdomains_small.txt -u $urldomain -H "HOST: FUZZ.$domain.htb" --hw $hw_value
+echo
+echo -e "\e[31m[+]\e[0m Completed!"
