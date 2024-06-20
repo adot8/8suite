@@ -18,7 +18,7 @@ echo
 echo "[+] Scanning $ip_address [65535 TCP ports]"
 echo
 # Run initial nmap scan to get open ports
-open_ports=$(nmap -p- -T5 -Pn $ip_address | grep ^[0-9] | cut -d '/' -f 1 | tr '\n' ',' | sed 's/,$//')
+open_ports=$(nmap -p- --min-rate=1000 -Pn $ip_address | grep ^[0-9] | cut -d '/' -f 1 | tr '\n' ',' | sed 's/,$//')
 
 # Run detailed scan with detected open ports
 echo
