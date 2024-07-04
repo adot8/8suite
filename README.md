@@ -1,2 +1,2 @@
-# 8enum
+# 8suite
 Automated enumeration and privilege escalation scripts
