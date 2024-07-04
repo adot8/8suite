@@ -1,2 +1,2 @@
 # 8enum
-Automated enumeration scripts
+Automated enumeration and privilege escalation scripts
