@@ -18,19 +18,19 @@ echo
 echo "[+] Scanning $ip_address [65535 TCP ports]"
 echo
 # Run initial nmap scan to get open ports
-open_ports=$(nmap -p- --min-rate=1000 -Pn $ip_address | grep ^[0-9] | cut -d '/' -f 1 | tr '\n' ',' | sed 's/,$//')
+open_ports=$(nmap -p- --min-rate=1000 -n -Pn --source-port 53 $ip_address | grep ^[0-9] | cut -d '/' -f 1 | tr '\n' ',' | sed 's/,$//')
 
 # Run detailed scan with detected open ports
 echo
 echo "[+] Enumerating $ip_address [$open_ports]"
 echo
 sleep 1
-nmap -p $open_ports -sC -sV -T5 -Pn $ip_address
+nmap -p $open_ports -sC -sV -Pn --source-port 53 $ip_address
 echo
 echo "[+] Enumerating $ip_address for vulnerabilities [$open_ports]"
 echo
 sleep 1
-nmap -p $open_ports --script vuln -T5 -Pn $ip_address
+nmap -p $open_ports -sC -sV -Pn --script vuln $ip_address
 echo
 echo "[+] Scanning $ip_address [1000 UDP ports]"
 nmap -sU -T4 -F -v $ip_address
