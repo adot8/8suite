@@ -1,2 +1,2 @@
 # 8suite
-Automated enumeration and privilege escalation scripts
+Automated enumeration and privilege escalation scripts for CTFs
